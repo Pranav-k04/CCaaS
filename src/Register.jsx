@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from "axios"
 
 const RegistrationPage = () => {
   const [formData, setFormData] = useState({
@@ -40,20 +41,39 @@ const RegistrationPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if(name === "name") {
-      setFormData(prev => ({...prev, fullName: value}))
-      return
-    }
     setFormData(prev => ({...prev, [name]: value}));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitted(true); // Set form as submitted
 
     if (isValid.fullName && isValid.email && isValid.password) {
-      // Send the registration data to your server or perform any necessary actions here.
-      alert('Registration Successful!');
+      const r = structuredClone(formData)
+      console.log(r)
+      r.name = formData.fullName
+      r.phone = r.phoneNumber
+      await axios.post(import.meta.env.VITE_SERVER_IP+"/user/signup", r).then(res => {
+        if(res.data?.status_code >= 400) {
+          setFormData({
+            fullName: '',
+            email: '',
+            password: '',
+            phoneNumber: '', // Add phone number state
+          })
+          setIsValid({
+            fullName: true,
+            email: true,
+            password: true,
+            phoneNumber: true, // Add phone number validation
+          })
+          alert("Server error please try again")
+          return
+        }
+        localStorage.setItem("signup-email", res.data.email)
+        window.location.reload("/register/verify")
+
+      })
     } else {
       alert('Please fill out the form correctly.');
     }
@@ -68,7 +88,7 @@ const RegistrationPage = () => {
           <input
             type="text"
             id="fullName"
-            name="name"
+            name="fullName"
             value={formData.fullName}
             onChange={handleInputChange}
             required

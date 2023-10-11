@@ -3,6 +3,7 @@ import Register from "./Register";
 import LoginPage from "./Login";
 import FileUploader from "./Verify";
 import MainPage from "./MainPage";
+import RegisterVerify from "./OTP";
 
 export default function App() {
   return (
@@ -12,7 +13,8 @@ export default function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/login/verify" element={<FileUploader />}/>
+          <Route path="/login/verify" element={<FileUploader />} />
+          <Route path="/register/verify" element={<RegisterVerify />} />
         </Routes>
       </div>
     </Router>
