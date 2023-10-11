@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const RegistrationPage = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
-    phoneNumber: '', // Add phone number state
+    phoneNumber: '',
   });
 
   const [isValid, setIsValid] = useState({
@@ -127,7 +127,7 @@ const RegistrationPage = () => {
           </button>
         </div>
         <div>
-          Already have an account !! <a href='/'>Login</a> here.
+          Already have an account !! <a href='/login'>Login</a> here.
         </div>
       </form>
     </div>
