@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import axios from "axios";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const LoginPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const emailIsValid = emailRegex.test(formData.email);
     const passwordIsValid = passwordRegex.test(formData.password);
@@ -33,9 +34,22 @@ const LoginPage = () => {
     });
 
     if (emailIsValid && passwordIsValid) {
-      // Perform login logic here
-      alert('Login Successful!');
-      window.location.replace("/upload")
+      await axios.post(import.meta.env.VITE_SERVER_IP+"/user/login", formData).then(res => {
+        localStorage.setItem("login-email", res.data.email)
+        window.location.replace("/login/verify")
+      }).catch(err => {
+        console.log(err)
+        setFormData({
+          email: '',
+          password: '',
+        })
+        if(err.response && err.response.data) {
+          alert(err.response.data.detail)
+        }
+        else {
+          alert("Error occurred please try again.")
+        }
+      })
     } else {
       alert('Please enter a valid email and password.');
     }
