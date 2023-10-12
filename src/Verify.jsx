@@ -27,6 +27,7 @@ function UploadFile() {
       }
       else {
         localStorage.setItem("session", JSON.stringify(res.data))
+        window.location.replace("/")
       }
     }).catch(console.log)
   }
@@ -47,9 +48,10 @@ function UploadFile() {
           onChange={handleOtpChange}
           required
         />
+        <br/>
+        <br/>
+        <br/>
         <input type="file" onChange={handleMultipleChange} />
-        
-        
         <button type="submit">Upload</button>
       </form>
     </div>
